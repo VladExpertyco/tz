@@ -1,1 +1,254 @@
-# tz
+[index.html](https://github.com/user-attachments/files/26898920/index.html)
+# tz<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expertyco — Wait List</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:#2e2e2e;font-family:'Open Sans',Arial,sans-serif;color:#fff}
+.hero{background:#222;padding:20px 32px 16px;border-bottom:1px solid #3a3a3a}
+.breadcrumb{font-size:10px;color:#666;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.hero-title{font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:400;color:#bbb}
+.product-area{display:flex;padding:36px 32px;align-items:flex-start;gap:0}
+.left{flex:1.1;position:relative}
+.sold-badge{position:absolute;top:0;right:0;background:#555;color:#ddd;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;font-weight:600;z-index:2}
+.watch-ph{width:100%;max-width:340px;height:360px;margin:10px auto 0;display:flex;align-items:center;justify-content:center}
+.right{flex:1;padding-left:36px;border-left:1px solid #3a3a3a;min-height:360px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.watch-title{font-size:24px;letter-spacing:.12em;text-transform:uppercase;font-weight:300;line-height:1.35;margin-bottom:20px}
+.price{font-size:32px;font-weight:300;margin-bottom:32px;letter-spacing:.04em}
+.cta-area{display:flex;flex-direction:column;align-items:center;width:100%}
+.btn-waitlist{width:260px;padding:16px 20px;background:transparent;border:1px solid #fff;color:#fff;font-size:11px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:background .2s;font-family:'Open Sans',sans-serif;font-weight:600}
+.btn-waitlist:hover{background:rgba(255,255,255,.08)}
+.btn-waitlist.success{border-color:#666;color:#666;cursor:default;pointer-events:none}
+.waitlist-note{font-size:11px;color:#777;margin-top:10px;max-width:260px;line-height:1.6;display:none;text-align:center}
+.categories{font-size:12px;color:#555;margin-top:32px}
+.categories span{color:#777}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.82);z-index:9999;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#2a2a2a;border:1px solid #444;width:100%;max-width:480px;padding:32px 28px 28px;position:relative;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;color:#666;font-size:22px;cursor:pointer;font-family:inherit;line-height:1;padding:4px 8px}
+.modal-close:hover{color:#fff}
+.modal-head{margin-bottom:20px}
+.modal-head h2{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:#fff;margin-bottom:8px}
+.modal-head p{font-size:12px;color:#888;line-height:1.6}
+.field-row{display:flex;gap:10px}
+.field-row .field-wrap{flex:1}
+.field-wrap{margin-bottom:10px}
+.field-wrap label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#888;display:block;margin-bottom:4px;font-weight:600}
+.field-wrap input{width:100%;background:#3c3c3c;border:1px solid #505050;color:#fff;padding:12px 13px;font-size:14px;font-family:'Open Sans',sans-serif;outline:none;transition:border-color .15s;border-radius:0;-webkit-appearance:none}
+.field-wrap input::placeholder{color:#666}
+.field-wrap input:focus{border-color:#888;background:#404040}
+.field-wrap input.err{border-color:#a04040}
+.consent-block{margin-top:14px}
+.privacy-text{font-size:11px;color:#888;line-height:1.6;margin-bottom:10px}
+.privacy-text a{color:#aaa;text-decoration:underline}
+.consent-line{display:flex;align-items:flex-start;gap:9px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.c-box{width:18px;height:18px;min-width:18px;border:1px solid #555;background:#333;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.c-box.checked{border-color:#ccc}
+.c-box.checked::after{content:'';display:block;width:9px;height:5px;border-left:1.5px solid #ccc;border-bottom:1.5px solid #ccc;transform:rotate(-45deg) translateY(-1px)}
+.consent-text{font-size:11px;color:#888;line-height:1.6}
+.captcha-mock{display:flex;align-items:center;gap:12px;background:#333;border:1px solid #484848;padding:13px 15px;margin-top:14px;max-width:260px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s}
+.captcha-mock.err-cap{border-color:#a04040}
+.captcha-cb{width:22px;height:22px;min-width:22px;border:2px solid #666;background:#2a2a2a;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.captcha-cb.checked{border-color:#aaa}
+.captcha-cb.checked::after{content:'';display:block;width:11px;height:6px;border-left:2px solid #aaa;border-bottom:2px solid #aaa;transform:rotate(-45deg) translateY(-1px)}
+.captcha-label{font-size:12px;color:#aaa;flex:1}
+.captcha-logo{display:flex;flex-direction:column;align-items:center;gap:2px}
+.captcha-logo svg{width:28px;height:28px}
+.captcha-logo-text{font-size:8px;color:#666;letter-spacing:.04em}
+.btn-send{width:100%;padding:15px;background:#3a3a3a;color:#ccc;border:1px solid #555;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;font-family:'Open Sans',sans-serif;font-weight:600;margin-top:18px;transition:background .15s,color .15s;-webkit-appearance:none}
+.btn-send:hover{background:#444;color:#fff}
+.btn-send:disabled{background:#2e2e2e;color:#555;border-color:#3a3a3a;cursor:default}
+.success-state{display:none;text-align:center;padding:16px 0}
+.success-icon{width:52px;height:52px;border:1.5px solid #ccc;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:22px;color:#ccc}
+.success-state h3{font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.success-state p{font-size:12px;color:#888;line-height:1.7}
+
+/* MOBILE */
+@media(max-width:680px){
+  .hero{padding:16px 20px 14px}
+  .product-area{flex-direction:column;padding:20px}
+  .left{width:100%}
+  .watch-ph{max-width:100%;height:260px}
+  .right{padding-left:0;border-left:none;border-top:1px solid #3a3a3a;padding-top:24px;margin-top:20px;width:100%;min-height:auto}
+  .watch-title{font-size:20px}
+  .price{font-size:26px;margin-bottom:24px}
+  .btn-waitlist{width:100%;max-width:100%}
+  .field-row{flex-direction:column;gap:0}
+  .modal{padding:24px 18px 22px}
+  .modal-head h2{font-size:11px}
+  .btn-send{padding:16px;font-size:11px}
+  .captcha-mock{max-width:100%}
+}
+@media(max-width:400px){
+  .watch-title{font-size:17px;letter-spacing:.08em}
+  .price{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="breadcrumb">Home › Catalog › Patek Philippe › Aquanaut › Patek Philippe Aquanaut Chronograph</div>
+  <div class="hero-title">Patek Philippe Aquanaut Chronograph</div>
+</div>
+
+<div class="product-area">
+  <div class="left">
+    <div class="sold-badge">Sold out</div>
+    <div class="watch-ph">
+      <svg width="100%" height="100%" viewBox="0 0 280 340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="110" y="0" width="60" height="30" rx="4" fill="#3a3a3a" stroke="#555" stroke-width="1"/>
+        <rect x="110" y="310" width="60" height="30" rx="4" fill="#3a3a3a" stroke="#555" stroke-width="1"/>
+        <ellipse cx="140" cy="170" rx="110" ry="110" fill="#1a2a4a" stroke="#4a6a9a" stroke-width="2"/>
+        <ellipse cx="140" cy="170" rx="100" ry="100" fill="#162240" stroke="#3a5a8a" stroke-width="1"/>
+        <ellipse cx="140" cy="170" rx="90" ry="90" fill="#1a2a4a"/>
+        <circle cx="140" cy="170" r="3" fill="#9ab"/>
+        <line x1="140" y1="170" x2="140" y2="100" stroke="#dde" stroke-width="2" stroke-linecap="round"/>
+        <line x1="140" y1="170" x2="195" y2="155" stroke="#dde" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="140" y="90" text-anchor="middle" fill="#aab" font-size="9" font-family="Open Sans,Arial">12</text>
+        <text x="140" y="258" text-anchor="middle" fill="#aab" font-size="9" font-family="Open Sans,Arial">6</text>
+        <text x="50" y="174" text-anchor="middle" fill="#aab" font-size="9" font-family="Open Sans,Arial">9</text>
+        <text x="228" y="174" text-anchor="middle" fill="#aab" font-size="9" font-family="Open Sans,Arial">3</text>
+        <text x="140" y="155" text-anchor="middle" fill="#7a9abb" font-size="7" letter-spacing="1" font-family="Open Sans,Arial">PATEK PHILIPPE</text>
+        <text x="140" y="163" text-anchor="middle" fill="#5a7a9b" font-size="5.5" letter-spacing="1" font-family="Open Sans,Arial">GENEVE</text>
+        <ellipse cx="140" cy="205" rx="22" ry="14" fill="none" stroke="#2a4a6a" stroke-width="1"/>
+        <ellipse cx="105" cy="185" rx="14" ry="9" fill="none" stroke="#2a4a6a" stroke-width="1"/>
+        <ellipse cx="175" cy="185" rx="14" ry="9" fill="none" stroke="#2a4a6a" stroke-width="1"/>
+        <rect x="133" y="198" width="14" height="9" rx="1" fill="#1e3a5a" stroke="#3a6a9a" stroke-width="0.5"/>
+        <text x="140" y="205" text-anchor="middle" fill="#9ab" font-size="6" font-family="Open Sans,Arial">18</text>
+        <rect x="236" y="152" width="18" height="10" rx="2" fill="#2a3a5a" stroke="#4a6a9a" stroke-width="0.8"/>
+        <rect x="26" y="152" width="18" height="10" rx="2" fill="#2a3a5a" stroke="#4a6a9a" stroke-width="0.8"/>
+        <rect x="26" y="168" width="18" height="10" rx="2" fill="#2a3a5a" stroke="#4a6a9a" stroke-width="0.8"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="watch-title">Patek Philippe<br>Aquanaut<br>Chronograph</div>
+    <div class="price">120,000 €</div>
+    <div class="cta-area">
+      <button class="btn-waitlist" id="btnWaitlist">Add to wait list</button>
+      <div class="waitlist-note" id="waitlistNote">You have been added to the wait list.<br>We will be in touch shortly.</div>
+    </div>
+    <div class="categories">Categories: <span>Aquanaut, Patek Philippe</span></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalBox">
+    <button class="modal-close" id="btnClose">&times;</button>
+    <div id="formState">
+      <div class="modal-head">
+        <h2>Join the wait list</h2>
+        <p>Leave your contact details and we will notify you as soon as this watch becomes available.</p>
+      </div>
+      <div class="field-row">
+        <div class="field-wrap"><label>First name *</label><input type="text" id="fName" placeholder="Alexander" autocomplete="given-name"></div>
+        <div class="field-wrap"><label>Last name</label><input type="text" id="fLast" placeholder="Smith" autocomplete="family-name"></div>
+      </div>
+      <div class="field-wrap"><label>Email *</label><input type="email" id="fEmail" placeholder="your@email.com" autocomplete="email" inputmode="email"></div>
+      <div class="field-wrap"><label>Phone (optional)</label><input type="tel" id="fPhone" placeholder="+48 000 000 000" autocomplete="tel" inputmode="tel"></div>
+      <div class="consent-block">
+        <div class="privacy-text">I acknowledge that my personal data will be processed in accordance with EXPERTYCO <a href="#">Privacy policy</a>.</div>
+        <div class="consent-line" id="consentLine">
+          <div class="c-box" id="cBox"></div>
+          <span class="consent-text">I consent to receive exclusive offers and updates from EXPERTYCO by email.</span>
+        </div>
+      </div>
+      <div class="captcha-mock" id="captchaMock">
+        <div class="captcha-cb" id="captchaCb"></div>
+        <span class="captcha-label">I'm not a robot</span>
+        <div class="captcha-logo">
+          <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4C11.16 4 4 11.16 4 20s7.16 16 16 16 16-7.16 16-16S28.84 4 20 4z" fill="#4a4a4a"/>
+            <path d="M20 8c-6.63 0-12 5.37-12 12s5.37 12 12 12 12-5.37 12-12S26.63 8 20 8z" fill="#555"/>
+            <path d="M26 17l-7 7-3-3" stroke="#8ab4f8" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="captcha-logo-text">reCAPTCHA</span>
+        </div>
+      </div>
+      <button class="btn-send" id="btnSend">Send</button>
+    </div>
+    <div class="success-state" id="successState">
+      <div class="success-icon">&#10003;</div>
+      <h3>You are on the list</h3>
+      <p>Thank you. Our manager will contact you<br>as soon as this watch becomes available.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var consentChecked = false;
+  var captchaDone = false;
+
+  function $(id){ return document.getElementById(id); }
+
+  $('btnWaitlist').addEventListener('click', openModal);
+  $('btnClose').addEventListener('click', closeModal);
+  $('consentLine').addEventListener('click', toggleConsent);
+  $('captchaMock').addEventListener('click', toggleCaptcha);
+  $('btnSend').addEventListener('click', submitForm);
+  $('modalOverlay').addEventListener('click', function(e){
+    if(e.target === $('modalOverlay')) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
+
+  function openModal(){
+    $('modalOverlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    $('modalOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+    $('formState').style.display = 'block';
+    $('successState').style.display = 'none';
+    $('btnSend').disabled = false;
+    $('btnSend').textContent = 'Send';
+  }
+  function toggleConsent(){
+    consentChecked = !consentChecked;
+    $('cBox').classList.toggle('checked', consentChecked);
+  }
+  function toggleCaptcha(){
+    captchaDone = !captchaDone;
+    $('captchaCb').classList.toggle('checked', captchaDone);
+    $('captchaMock').classList.toggle('err-cap', false);
+  }
+  function submitForm(){
+    var name = $('fName').value.trim();
+    var email = $('fEmail').value.trim();
+    var ok = true;
+    $('fName').classList.toggle('err', !name); if(!name) ok = false;
+    $('fEmail').classList.toggle('err', !email); if(!email) ok = false;
+    if(!captchaDone){ $('captchaMock').classList.add('err-cap'); ok = false; }
+    if(!ok) return;
+    var btn = $('btnSend');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    setTimeout(function(){
+      $('formState').style.display = 'none';
+      $('successState').style.display = 'block';
+      setTimeout(function(){
+        closeModal();
+        var mb = $('btnWaitlist');
+        mb.textContent = 'Added to wait list';
+        mb.classList.add('success');
+        mb.disabled = true;
+        $('waitlistNote').style.display = 'block';
+      }, 2200);
+    }, 1100);
+  }
+})();
+</script>
+</body>
+</html>
